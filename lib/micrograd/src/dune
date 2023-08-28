@@ -1,0 +1,7 @@
+(library
+ (name micrograd)
+ (public_name micrograd)
+ (flags -w +a-4-40-41-42-44-66 -warn-error +a)
+ (libraries core)
+ (preprocess
+  (pps ppx_jane ppx_js_style -check-doc-comments)))

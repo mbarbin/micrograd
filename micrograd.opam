@@ -1,0 +1,23 @@
+opam-version: "2.0"
+synopsis: "Building micrograd"
+description: "Building micrograd"
+maintainer: "Mathieu Barbin"
+authors: "Mathieu Barbin"
+license: "MIT"
+homepage: "https://github.com/mbarbin/micrograd"
+doc: "https://github.com/mbarbin/micrograd"
+bug-reports: "https://github.com/mbarbin/micrograd/issues"
+depends: [
+  "ocaml" {>= "5.0"}
+  "dune" {>= "3.9"}
+  "core" {>= "v0.16" & < "v0.17"}
+  "core_unix" {>= "v0.16" & < "v0.17"}
+  "ppx_jane" {>= "v0.16" & < "v0.17"}
+  "ppx_js_style" {>= "v0.16" & < "v0.17"}
+]
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs]
+  ["dune" "runtest" "-p" name "-j" jobs] {with-test}
+]
+dev-repo: "git+https://github.com/mbarbin/micrograd.git"
