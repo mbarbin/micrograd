@@ -1,4 +1,5 @@
 open! Core
+module Value = Value
 
 let hello_world = [%sexp "Hello, World!"]
 
