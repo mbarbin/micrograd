@@ -4,16 +4,10 @@ type t [@@deriving sexp_of]
 
 (** {1 Build expressions} *)
 
-val leaf : float -> t
-val add : t -> t -> t
-val sub : t -> t -> t
-val power : t -> int -> t
-val multiply : t -> t -> t
-val divide : t -> t -> t
-val negate : t -> t
-val relu : t -> t
-
-module Infix : sig
+module Expression : sig
+  val leaf : float -> t
+  val negate : t -> t
+  val relu : t -> t
   val ( + ) : t -> t -> t
   val ( - ) : t -> t -> t
   val ( * ) : t -> t -> t
@@ -25,4 +19,4 @@ end
 
 val data : t -> float
 val gradient : t -> float
-val backward_propagation : t -> unit
+val run_backward_propagation : t -> unit

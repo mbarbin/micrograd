@@ -82,7 +82,10 @@ let power t n = make (Power (t, n))
 let negate t = make (Negate t)
 let relu t = make (Relu t)
 
-module Infix = struct
+module Expression = struct
+  let leaf = leaf
+  let relu = relu
+  let negate = negate
   let ( + ) = add
   let ( - ) = sub
   let ( * ) = multiply
@@ -90,7 +93,7 @@ module Infix = struct
   let ( ** ) = power
 end
 
-let backward_propagation t =
+let run_backward_propagation t =
   let stack = ref [] in
   let visited = Hash_set.create (module Int) in
   let rec visit (t : t) =
