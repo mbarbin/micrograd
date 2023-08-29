@@ -26,33 +26,6 @@ let compute_data node =
   | Relu t -> Float.max 0. t.data
 ;;
 
-let children node =
-  let two t1 t2 = if phys_equal t1 t2 then [ t1 ] else [ t1; t2 ] in
-  match (node : node) with
-  | Leaf (_ : float) -> []
-  | Add (t1, t2) | Multiply (t1, t2) -> two t1 t2
-  | Power (t, (_ : int)) | Negate t | Relu t -> [ t ]
-;;
-
-let add_gradient t value = t.gradient <- t.gradient +. value
-
-let gradient_step t =
-  match t.node with
-  | Leaf _ -> ()
-  | Add (t1, t2) ->
-    add_gradient t1 t.gradient;
-    add_gradient t2 t.gradient;
-    ()
-  | Multiply (t1, t2) ->
-    add_gradient t1 (t.gradient *. t2.data);
-    add_gradient t2 (t.gradient *. t1.data);
-    ()
-  | Power (t1, n) ->
-    add_gradient t1 (Float.of_int n *. Float.int_pow t1.data (n - 1) *. t.gradient)
-  | Negate t1 -> add_gradient t1 (-.t.gradient)
-  | Relu t1 -> add_gradient t1 (if Float.(t.data > 0.) then t.gradient else 0.)
-;;
-
 let next_id =
   let v = ref (-1) in
   fun () ->
@@ -90,6 +63,33 @@ module Expression = struct
   let ( / ) = divide
   let ( ** ) = power
 end
+
+let children node =
+  let two t1 t2 = if phys_equal t1 t2 then [ t1 ] else [ t1; t2 ] in
+  match (node : node) with
+  | Leaf (_ : float) -> []
+  | Add (t1, t2) | Multiply (t1, t2) -> two t1 t2
+  | Power (t, (_ : int)) | Negate t | Relu t -> [ t ]
+;;
+
+let add_gradient t value = t.gradient <- t.gradient +. value
+
+let gradient_step t =
+  match t.node with
+  | Leaf _ -> ()
+  | Add (t1, t2) ->
+    add_gradient t1 t.gradient;
+    add_gradient t2 t.gradient;
+    ()
+  | Multiply (t1, t2) ->
+    add_gradient t1 (t.gradient *. t2.data);
+    add_gradient t2 (t.gradient *. t1.data);
+    ()
+  | Power (t1, n) ->
+    add_gradient t1 (Float.of_int n *. Float.int_pow t1.data (n - 1) *. t.gradient)
+  | Negate t1 -> add_gradient t1 (-.t.gradient)
+  | Relu t1 -> add_gradient t1 (if Float.(t.data > 0.) then t.gradient else 0.)
+;;
 
 let run_backward_propagation t =
   let stack = ref [] in

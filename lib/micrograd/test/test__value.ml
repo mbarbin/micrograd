@@ -106,7 +106,6 @@ let%expect_test "karpathy's example" =
     a, b, g
   in
   let a, b, g = f (-4.) 2. in
-  let print4f f = Printf.sprintf "%.4f" f in
   print_s [%sexp { g = (Value.data g : float) }];
   [%expect {| ((g 24.704081632653061)) |}];
   Value.run_backward_propagation g;
@@ -119,6 +118,7 @@ let%expect_test "karpathy's example" =
   (* Compare with karpathy's expected values. *)
   let karpathy's_expected_values = "24.7041", "138.8338", "645.5773" in
   let () =
+    let print4f f = Printf.sprintf "%.4f" f in
     let g4 = print4f (Value.data g)
     and ga4 = print4f grad_a
     and gb4 = print4f grad_b in
