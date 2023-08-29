@@ -23,7 +23,7 @@ let compute_data node =
   | Multiply (t1, t2) -> t1.data *. t2.data
   | Power (t, n) -> Float.int_pow t.data n
   | Negate t -> -1. *. t.data
-  | Relu t -> Float.min 0. t.data
+  | Relu t -> Float.max 0. t.data
 ;;
 
 let children node =
