@@ -29,11 +29,9 @@ let compute_data node =
 let children node =
   let two t1 t2 = if phys_equal t1 t2 then [ t1 ] else [ t1; t2 ] in
   match (node : node) with
-  | Leaf _ -> []
+  | Leaf (_ : float) -> []
   | Add (t1, t2) | Multiply (t1, t2) -> two t1 t2
-  | Power (t, (_ : int)) -> [ t ]
-  | Negate t -> [ t ]
-  | Relu t -> [ t ]
+  | Power (t, (_ : int)) | Negate t | Relu t -> [ t ]
 ;;
 
 let add_gradient t value = t.gradient <- t.gradient +. value
