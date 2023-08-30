@@ -15,6 +15,7 @@ and node =
   | Negate of t
   | Relu of t
   | Tanh of t
+  | Exp of t
 [@@deriving sexp_of]
 
 let compute_data node =
@@ -26,6 +27,7 @@ let compute_data node =
   | Negate t -> -1. *. t.data
   | Relu t -> Float.max 0. t.data
   | Tanh t -> Float.tanh t.data
+  | Exp t -> Float.exp t.data
 ;;
 
 module Expression = struct
@@ -41,6 +43,7 @@ module Expression = struct
   let relu t = make (Relu t)
   let negate t = make (Negate t)
   let tanh t = make (Tanh t)
+  let exp t = make (Exp t)
   let ( + ) t1 t2 = make (Add (t1, t2))
 
   let ( - ) t1 t2 =
@@ -63,7 +66,7 @@ let children node =
   match (node : node) with
   | Leaf (_ : float) -> []
   | Add (t1, t2) | Multiply (t1, t2) -> two t1 t2
-  | Power (t, (_ : int)) | Negate t | Relu t | Tanh t -> [ t ]
+  | Power (t, (_ : int)) | Negate t | Relu t | Tanh t | Exp t -> [ t ]
 ;;
 
 let add_gradient t value = t.gradient <- t.gradient +. value
@@ -84,6 +87,7 @@ let gradient_step t =
   | Negate t1 -> add_gradient t1 (-.t.gradient)
   | Relu t1 -> add_gradient t1 (if Float.(t.data > 0.) then t.gradient else 0.)
   | Tanh t1 -> add_gradient t1 (t.gradient *. (1. -. Float.square t.data))
+  | Exp t1 -> add_gradient t1 (t.gradient *. t.data)
 ;;
 
 let run_backward_propagation t =

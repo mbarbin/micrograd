@@ -9,6 +9,7 @@ module Expression : sig
   val negate : t -> t
   val relu : t -> t
   val tanh : t -> t
+  val exp : t -> t
   val ( + ) : t -> t -> t
   val ( - ) : t -> t -> t
   val ( * ) : t -> t -> t
