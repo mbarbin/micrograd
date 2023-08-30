@@ -83,7 +83,7 @@ let gradient_step t =
     add_gradient t1 (Float.of_int n *. Float.int_pow t1.data (n - 1) *. t.gradient)
   | Negate t1 -> add_gradient t1 (-.t.gradient)
   | Relu t1 -> add_gradient t1 (if Float.(t.data > 0.) then t.gradient else 0.)
-  | Tanh t1 -> add_gradient t1 (t.gradient *. (1. -. Float.square (Float.tanh t1.data)))
+  | Tanh t1 -> add_gradient t1 (t.gradient *. (1. -. Float.square t.data))
 ;;
 
 let run_backward_propagation t =
