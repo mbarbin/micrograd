@@ -8,6 +8,7 @@ module Expression : sig
   val leaf : float -> t
   val negate : t -> t
   val relu : t -> t
+  val tanh : t -> t
   val ( + ) : t -> t -> t
   val ( - ) : t -> t -> t
   val ( * ) : t -> t -> t

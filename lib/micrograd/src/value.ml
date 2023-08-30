@@ -14,6 +14,7 @@ and node =
   | Power of t * int
   | Negate of t
   | Relu of t
+  | Tanh of t
 [@@deriving sexp_of]
 
 let compute_data node =
@@ -24,44 +25,37 @@ let compute_data node =
   | Power (t, n) -> Float.int_pow t.data n
   | Negate t -> -1. *. t.data
   | Relu t -> Float.max 0. t.data
+  | Tanh t -> Float.tanh t.data
 ;;
-
-let next_id =
-  let v = ref (-1) in
-  fun () ->
-    incr v;
-    !v
-;;
-
-let make node = { data = compute_data node; gradient = 0.; node; id = next_id () }
-let leaf data = make (Leaf data)
-let add t1 t2 = make (Add (t1, t2))
-
-let sub t1 t2 =
-  let t2' = make (Negate t2) in
-  make (Add (t1, t2'))
-;;
-
-let multiply t1 t2 = make (Multiply (t1, t2))
-
-let divide t1 t2 =
-  let t2' = make (Power (t2, -1)) in
-  make (Multiply (t1, t2'))
-;;
-
-let power t n = make (Power (t, n))
-let negate t = make (Negate t)
-let relu t = make (Relu t)
 
 module Expression = struct
-  let leaf = leaf
-  let relu = relu
-  let negate = negate
-  let ( + ) = add
-  let ( - ) = sub
-  let ( * ) = multiply
-  let ( / ) = divide
-  let ( ** ) = power
+  let next_id =
+    let v = ref (-1) in
+    fun () ->
+      incr v;
+      !v
+  ;;
+
+  let make node = { data = compute_data node; gradient = 0.; node; id = next_id () }
+  let leaf data = make (Leaf data)
+  let relu t = make (Relu t)
+  let negate t = make (Negate t)
+  let tanh t = make (Tanh t)
+  let ( + ) t1 t2 = make (Add (t1, t2))
+
+  let ( - ) t1 t2 =
+    let t2' = make (Negate t2) in
+    make (Add (t1, t2'))
+  ;;
+
+  let ( * ) t1 t2 = make (Multiply (t1, t2))
+
+  let ( / ) t1 t2 =
+    let t2' = make (Power (t2, -1)) in
+    make (Multiply (t1, t2'))
+  ;;
+
+  let ( ** ) t n = make (Power (t, n))
 end
 
 let children node =
@@ -69,7 +63,7 @@ let children node =
   match (node : node) with
   | Leaf (_ : float) -> []
   | Add (t1, t2) | Multiply (t1, t2) -> two t1 t2
-  | Power (t, (_ : int)) | Negate t | Relu t -> [ t ]
+  | Power (t, (_ : int)) | Negate t | Relu t | Tanh t -> [ t ]
 ;;
 
 let add_gradient t value = t.gradient <- t.gradient +. value
@@ -89,6 +83,7 @@ let gradient_step t =
     add_gradient t1 (Float.of_int n *. Float.int_pow t1.data (n - 1) *. t.gradient)
   | Negate t1 -> add_gradient t1 (-.t.gradient)
   | Relu t1 -> add_gradient t1 (if Float.(t.data > 0.) then t.gradient else 0.)
+  | Tanh t1 -> add_gradient t1 (t.gradient *. (1. -. Float.square (Float.tanh t1.data)))
 ;;
 
 let run_backward_propagation t =
