@@ -107,3 +107,84 @@ let run_backward_propagation t =
 
 let gradient t = t.gradient
 let data t = t.data
+
+module With_tensor = struct
+  open Torch
+
+  type value = t
+
+  type t =
+    { value : value
+    ; tensor : Tensor.t
+    }
+
+  module V = Expression
+
+  module Expression = struct
+    let with_gradient t =
+      { value = t.value; tensor = Tensor.set_requires_grad t.tensor ~r:true }
+    ;;
+
+    let leaf f = { value = V.leaf f; tensor = Tensor.f f } |> with_gradient
+
+    let negate t =
+      { value = V.negate t.value; tensor = Tensor.(~-(t.tensor)) } |> with_gradient
+    ;;
+
+    let relu t =
+      { value = V.relu t.value; tensor = Tensor.relu t.tensor } |> with_gradient
+    ;;
+
+    let tanh t =
+      { value = V.tanh t.value; tensor = Tensor.tanh t.tensor } |> with_gradient
+    ;;
+
+    let exp t = { value = V.exp t.value; tensor = Tensor.exp t.tensor } |> with_gradient
+
+    let ( + ) t1 t2 =
+      { value = V.(t1.value + t2.value); tensor = Tensor.(t1.tensor + t2.tensor) }
+      |> with_gradient
+    ;;
+
+    let ( - ) t1 t2 =
+      { value = V.(t1.value - t2.value); tensor = Tensor.(t1.tensor - t2.tensor) }
+      |> with_gradient
+    ;;
+
+    let ( * ) t1 t2 =
+      { value = V.(t1.value * t2.value); tensor = Tensor.(t1.tensor * t2.tensor) }
+      |> with_gradient
+    ;;
+
+    let ( / ) t1 t2 =
+      { value = V.(t1.value / t2.value); tensor = Tensor.(t1.tensor / t2.tensor) }
+      |> with_gradient
+    ;;
+
+    let ( ** ) t1 n =
+      { value = V.(t1.value ** n)
+      ; tensor = Tensor.pow_ t1.tensor ~exponent:(Scalar.int n)
+      }
+      |> with_gradient
+    ;;
+  end
+
+  let value t = t.value
+  let tensor t = t.tensor
+end
+
+let rec tensor t =
+  let open Torch in
+  let tensor =
+    match t.node with
+    | Leaf f -> Tensor.f f
+    | Add (t1, t2) -> Tensor.(tensor t1 + tensor t2)
+    | Multiply (t1, t2) -> Tensor.(tensor t1 * tensor t2)
+    | Power (t, n) -> Tensor.float_power_ (tensor t) ~exponent:(Scalar.int n)
+    | Negate t -> Tensor.(~-(tensor t))
+    | Relu t -> Tensor.relu (tensor t)
+    | Tanh t -> Tensor.tanh (tensor t)
+    | Exp t -> Tensor.exp (tensor t)
+  in
+  Tensor.set_requires_grad tensor ~r:true
+;;
