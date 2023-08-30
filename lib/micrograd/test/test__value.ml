@@ -175,3 +175,42 @@ let%expect_test "karpathy's example" =
   [%expect {| ((g4 24.7041) (ga4 138.8338) (gb4 645.5773)) |}];
   ()
 ;;
+
+let%expect_test "karpathy's neuron example 1" =
+  let r =
+    let open Value.Expression in
+    let x1 = leaf 2. in
+    let x2 = leaf 0. in
+    let w1 = leaf (-3.) in
+    let w2 = leaf 1. in
+    let b = leaf 8. in
+    tanh ((x1 * w1) + (x2 * w2) + b)
+  in
+  print_s [%sexp (Value.data r : float)];
+  [%expect {| 0.9640275800758169 |}];
+  ()
+;;
+
+let%expect_test "karpathy's neuron example 2" =
+  let open Value.Expression in
+  let x1 = leaf 2. in
+  let x2 = leaf 0. in
+  let w1 = leaf (-3.) in
+  let w2 = leaf 1. in
+  let b = leaf 6.8813735870195432 in
+  let r = tanh ((x1 * w1) + (x2 * w2) + b) in
+  print_s [%sexp (Value.data r : float)];
+  [%expect {| 0.70710678118654768 |}];
+  Value.run_backward_propagation r;
+  print_s
+    [%sexp
+      { gx1 = (Value.gradient x1 : float)
+      ; gx2 = (Value.gradient x2 : float)
+      ; gw1 = (Value.gradient w1 : float)
+      ; gw2 = (Value.gradient w2 : float)
+      }];
+  [%expect {|
+    ((gx1 -1.4999999999999993) (gx2 0.49999999999999978)
+     (gw1 0.99999999999999956) (gw2 0)) |}];
+  ()
+;;
