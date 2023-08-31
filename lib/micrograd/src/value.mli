@@ -23,6 +23,14 @@ val data : t -> float
 val gradient : t -> float
 val run_backward_propagation : t -> unit
 
+(** Assuming some leaves data have changed, recompute then entire graph. *)
+val run_forward : t -> unit
+
+(** Update the data contained in a [leaf] node. This function will raise if [t]
+    was not built with [leaf]. After updating leaf data, the values must be
+    recomputed with a [run_forward]. *)
+val update_data : t -> f:(float -> float) -> unit
+
 (** {1 Interacting with Torch} *)
 
 val tensor : t -> Torch.Tensor.t

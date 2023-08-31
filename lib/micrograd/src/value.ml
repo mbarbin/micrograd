@@ -1,14 +1,14 @@
 open! Core
 
 type t =
-  { data : float
+  { mutable data : float
   ; mutable gradient : float
   ; node : node
   ; id : int
   }
 
 and node =
-  | Leaf of float
+  | Leaf of { mutable parameter : float }
   | Add of t * t
   | Multiply of t * t
   | Power of t * int
@@ -20,7 +20,7 @@ and node =
 
 let compute_data node =
   match (node : node) with
-  | Leaf f -> f
+  | Leaf f -> f.parameter
   | Add (t1, t2) -> t1.data +. t2.data
   | Multiply (t1, t2) -> t1.data *. t2.data
   | Power (t, n) -> Float.int_pow t.data n
@@ -28,6 +28,13 @@ let compute_data node =
   | Relu t -> Float.max 0. t.data
   | Tanh t -> Float.tanh t.data
   | Exp t -> Float.exp t.data
+;;
+
+let update_data t ~f =
+  match t.node with
+  | Leaf t -> t.parameter <- f t.parameter
+  | Add _ | Multiply _ | Power _ | Negate _ | Relu _ | Tanh _ | Exp _ ->
+    raise_s [%sexp "Cannot update value since it is not a leaf", (t : t)]
 ;;
 
 module Expression = struct
@@ -39,7 +46,7 @@ module Expression = struct
   ;;
 
   let make node = { data = compute_data node; gradient = 0.; node; id = next_id () }
-  let leaf data = make (Leaf data)
+  let leaf data = make (Leaf { parameter = data })
   let relu t = make (Relu t)
   let negate t = make (Negate t)
   let tanh t = make (Tanh t)
@@ -64,7 +71,7 @@ end
 let children node =
   let two t1 t2 = if phys_equal t1 t2 then [ t1 ] else [ t1; t2 ] in
   match (node : node) with
-  | Leaf (_ : float) -> []
+  | Leaf { parameter = (_ : float) } -> []
   | Add (t1, t2) | Multiply (t1, t2) -> two t1 t2
   | Power (t, (_ : int)) | Negate t | Relu t | Tanh t | Exp t -> [ t ]
 ;;
@@ -90,19 +97,27 @@ let gradient_step t =
   | Exp t1 -> add_gradient t1 (t.gradient *. t.data)
 ;;
 
-let run_backward_propagation t =
-  let stack = ref [] in
+let topological_sort t =
+  let queue = Queue.create () in
   let visited = Hash_set.create (module Int) in
   let rec visit (t : t) =
     if not (Hash_set.mem visited t.id)
     then (
       Hash_set.strict_add_exn visited t.id;
       List.iter (children t.node) ~f:visit;
-      stack := t :: !stack)
+      Queue.enqueue queue t)
   in
   visit t;
+  Queue.to_list queue
+;;
+
+let run_forward t =
+  List.iter (topological_sort t) ~f:(fun t -> t.data <- compute_data t.node)
+;;
+
+let run_backward_propagation t =
   t.gradient <- 1.;
-  List.iter !stack ~f:gradient_step
+  List.iter (topological_sort t |> List.rev) ~f:gradient_step
 ;;
 
 let gradient t = t.gradient
@@ -177,7 +192,7 @@ let rec tensor t =
   let open Torch in
   let tensor =
     match t.node with
-    | Leaf f -> Tensor.f f
+    | Leaf f -> Tensor.f f.parameter
     | Add (t1, t2) -> Tensor.(tensor t1 + tensor t2)
     | Multiply (t1, t2) -> Tensor.(tensor t1 * tensor t2)
     | Power (t, n) -> Tensor.float_power_ (tensor t) ~exponent:(Scalar.int n)

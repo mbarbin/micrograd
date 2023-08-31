@@ -16,7 +16,10 @@ let create ~num_inputs ~num_outputs ~hidden_layers =
 ;;
 
 let apply t ~inputs:x =
-  let x = Array.map x ~f:Value.Expression.leaf in
-  Array.fold t.layers ~init:x ~f:(fun acc layer ->
-    Layer.apply layer ~inputs:(acc |> Array.map ~f:Value.data))
+  Array.fold t.layers ~init:x ~f:(fun x layer -> Layer.apply layer ~inputs:x)
+;;
+
+let parameters t =
+  Array.fold t.layers ~init:Appendable_list.empty ~f:(fun acc layer ->
+    Appendable_list.append acc (Layer.parameters layer))
 ;;

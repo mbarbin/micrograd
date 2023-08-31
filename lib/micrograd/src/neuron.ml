@@ -22,15 +22,19 @@ let apply t ~inputs:x =
     raise_s
       [%sexp
         "Unexpected input length"
-        , { x : float array
+        , { x = (Array.map x ~f:Value.data : float array)
           ; x_length = (Array.length x : int)
           ; t_num_inputs = (t.num_inputs : int)
           }];
   let open Value.Expression in
   let wx =
-    Array.map2_exn t.weights x ~f:(fun w x -> Value.Expression.(w * leaf x))
+    Array.map2_exn t.weights x ~f:(fun w x -> Value.Expression.(w * x))
     |> Array.reduce_exn ~f:( + )
   in
-  let sum = wx + t.bias in
+  let sum = tanh (wx + t.bias) in
   if t.linear then sum else relu sum
+;;
+
+let parameters t =
+  Appendable_list.(append ([ t.bias ] |> of_list) (t.weights |> Array.to_list |> of_list))
 ;;
