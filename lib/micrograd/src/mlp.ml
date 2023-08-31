@@ -7,10 +7,7 @@ let create ~num_inputs ~num_outputs ~hidden_layers =
   let layers =
     let num_layers = Array.length shape - 1 in
     Array.init num_layers ~f:(fun i ->
-      Layer.create
-        ~num_inputs:shape.(i)
-        ~num_outputs:shape.(i + 1)
-        ~linear:(i = num_layers))
+      Layer.create ~num_inputs:shape.(i) ~num_outputs:shape.(i + 1) ~linear:true)
   in
   { layers }
 ;;

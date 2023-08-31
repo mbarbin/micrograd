@@ -116,8 +116,10 @@ let run_forward t =
 ;;
 
 let run_backward_propagation t =
+  let order = topological_sort t |> List.rev in
+  List.iter order ~f:(fun t -> t.gradient <- 0.);
   t.gradient <- 1.;
-  List.iter (topological_sort t |> List.rev) ~f:gradient_step
+  List.iter order ~f:gradient_step
 ;;
 
 let gradient t = t.gradient
