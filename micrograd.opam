@@ -10,6 +10,7 @@ bug-reports: "https://github.com/mbarbin/micrograd/issues"
 depends: [
   "ocaml" {>= "5.0"}
   "dune" {>= "3.9"}
+  "appendable-list" {>= "v0.16" & < "v0.17"}
   "core" {>= "v0.16" & < "v0.17"}
   "core_unix" {>= "v0.16" & < "v0.17"}
   "ppx_jane" {>= "v0.16" & < "v0.17"}
