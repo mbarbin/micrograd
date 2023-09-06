@@ -2,6 +2,9 @@
 
 ## Added
 ## Changed
+
+- Add dependency to `Appendable_list`, remove local re-implementation.
+
 ## Fixed
 ## Removed
 
