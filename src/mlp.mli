@@ -1,4 +1,4 @@
-open! Core
+open! Base
 
 type t = private { layers : Layer.t array }
 

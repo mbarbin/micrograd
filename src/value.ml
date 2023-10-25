@@ -1,4 +1,4 @@
-open! Core
+open! Base
 
 type t =
   { mutable data : float
@@ -41,7 +41,7 @@ module Expression = struct
   let next_id =
     let v = ref (-1) in
     fun () ->
-      incr v;
+      Int.incr v;
       !v
   ;;
 
