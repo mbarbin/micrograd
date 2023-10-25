@@ -48,7 +48,7 @@ let%expect_test "learning" =
               ; b = ((Value.data neuron.bias, Value.gradient neuron.bias) : float * float)
               ; ws =
                   (Array.map neuron.weights ~f:(fun w -> Value.data w, Value.gradient w)
-                    : (float * float) array)
+                   : (float * float) array)
               }])
         in
         [%sexp { layer = (i : int) }, (neurons : Sexp.t array)])
