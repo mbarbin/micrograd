@@ -1,5 +1,3 @@
-open! Base
-
 type t = private { layers : Layer.t array }
 
 val create : num_inputs:int -> num_outputs:int -> hidden_layers:int list -> t

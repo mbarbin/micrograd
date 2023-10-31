@@ -1,5 +1,3 @@
-open! Base
-
 type t =
   { num_inputs : int
   ; weights : Value.t array

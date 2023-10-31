@@ -1,5 +1,3 @@
-open! Base
-
 type t [@@deriving sexp_of]
 
 (** {1 Build expressions} *)

@@ -1,6 +1,3 @@
-open! Base
-open! Stdio
-open! Micrograd
 open! Torch
 
 let get_float t =

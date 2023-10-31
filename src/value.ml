@@ -1,5 +1,3 @@
-open! Base
-
 type t =
   { mutable data : float
   ; mutable gradient : float

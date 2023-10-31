@@ -1,5 +1,3 @@
-open! Base
-
 type t = private
   { num_inputs : int
   ; weights : Value.t array

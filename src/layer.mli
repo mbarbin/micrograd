@@ -1,5 +1,3 @@
-open! Base
-
 type t = private { neurons : Neuron.t array }
 
 val create : num_inputs:int -> num_outputs:int -> linear:bool -> t

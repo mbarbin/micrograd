@@ -1,7 +1,3 @@
-open! Base
-open! Stdio
-open! Micrograd
-
 let example =
   (* [ [inputs], desired output ] *)
   [ [ 2.; 3.; -1. ], 1.

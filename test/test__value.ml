@@ -1,7 +1,3 @@
-open! Base
-open! Stdio
-open! Micrograd
-
 let%expect_test "Value.data" =
   let c =
     let open Value.Expression in

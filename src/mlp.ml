@@ -1,5 +1,3 @@
-open! Base
-
 type t = { layers : Layer.t array }
 
 let create ~num_inputs ~num_outputs ~hidden_layers =

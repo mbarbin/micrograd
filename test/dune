@@ -1,6 +1,16 @@
 (library
  (name micrograd_test)
- (flags -w +a-4-40-41-42-44-66 -warn-error +a)
+ (flags
+  -w
+  +a-4-40-41-42-44-66
+  -warn-error
+  +a
+  -open
+  Base
+  -open
+  Stdio
+  -open
+  Micrograd)
  (libraries base micrograd stdio torch)
  (inline_tests)
  (preprocess

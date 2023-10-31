@@ -1,5 +1,3 @@
-open! Base
-
 type t = { neurons : Neuron.t array }
 
 let create ~num_inputs ~num_outputs ~linear =
