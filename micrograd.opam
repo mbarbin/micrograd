@@ -5,7 +5,7 @@ maintainer: "Mathieu Barbin"
 authors: "Mathieu Barbin"
 license: "MIT"
 homepage: "https://github.com/mbarbin/micrograd"
-doc: "https://github.com/mbarbin/micrograd"
+doc: "https://mbarbin.github.io/micrograd/"
 bug-reports: "https://github.com/mbarbin/micrograd/issues"
 depends: [
   "ocaml" {>= "5.1"}
