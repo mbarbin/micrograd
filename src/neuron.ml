@@ -26,13 +26,12 @@ let apply t ~inputs:x =
           }];
   let open Value.Expression in
   let wx =
-    Array.map2_exn t.weights x ~f:(fun w x -> Value.Expression.(w * x))
-    |> Array.reduce_exn ~f:( + )
+    Array.map2_exn t.weights x ~f:(fun w x -> w * x) |> Array.reduce_exn ~f:( + )
   in
   let sum = tanh (wx + t.bias) in
   if t.linear then sum else relu sum
 ;;
 
 let parameters t =
-  Appendable_list.(append ([ t.bias ] |> of_list) (t.weights |> Array.to_list |> of_list))
+  Appendable_list.add_front t.bias (t.weights |> Array.to_list |> Appendable_list.of_list)
 ;;
