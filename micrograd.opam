@@ -2,8 +2,6 @@
 opam-version: "2.0"
 synopsis:
   "A replication of karpathy/micrograd in OCaml for educational purposes"
-description:
-  "A replication of karpathy/micrograd in OCaml for educational purposes"
 maintainer: ["Mathieu Barbin"]
 authors: ["Mathieu Barbin"]
 license: "MIT"

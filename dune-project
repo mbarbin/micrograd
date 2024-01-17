@@ -19,8 +19,6 @@
  (name micrograd)
  (synopsis
   "A replication of karpathy/micrograd in OCaml for educational purposes")
- (description
-  "A replication of karpathy/micrograd in OCaml for educational purposes")
  (depends
   (ocaml
    (>= 5.1))
