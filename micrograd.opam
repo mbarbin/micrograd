@@ -9,8 +9,8 @@ homepage: "https://github.com/mbarbin/micrograd"
 doc: "https://mbarbin.github.io/micrograd/"
 bug-reports: "https://github.com/mbarbin/micrograd/issues"
 depends: [
+  "dune" {>= "3.12"}
   "ocaml" {>= "5.1"}
-  "dune" {>= "3.11" & >= "3.11"}
   "appendable-list" {>= "v0.16" & < "v0.17"}
   "base" {>= "v0.16" & < "v0.17"}
   "ppx_jane" {>= "v0.16" & < "v0.17"}

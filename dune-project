@@ -1,4 +1,4 @@
-(lang dune 3.11)
+(lang dune 3.12)
 
 (name micrograd)
 
@@ -22,8 +22,6 @@
  (depends
   (ocaml
    (>= 5.1))
-  (dune
-   (>= 3.11))
   (appendable-list
    (and
     (>= v0.16)
