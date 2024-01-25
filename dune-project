@@ -30,6 +30,10 @@
    (and
     (>= v0.16)
     (< v0.17)))
+  (bisect_ppx
+   (and
+    :dev
+    (>= 2.8.3)))
   (ppx_jane
    (and
     (>= v0.16)
