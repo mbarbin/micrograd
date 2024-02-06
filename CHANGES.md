@@ -20,5 +20,7 @@
 - Gradient descent on a small binary classifier example
 
 ### Changed
+
 ### Fixed
+
 ### Removed
