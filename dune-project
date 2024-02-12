@@ -34,15 +34,16 @@
    (and
     :dev
     (>= 2.8.3)))
+  (expect_test_helpers_core
+   (and
+    :with-test
+    (>= v0.16)
+    (< v0.17)))
   (ppx_jane
    (and
     (>= v0.16)
     (< v0.17)))
   (ppx_js_style
-   (and
-    (>= v0.16)
-    (< v0.17)))
-  (stdio
    (and
     (>= v0.16)
     (< v0.17)))

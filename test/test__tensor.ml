@@ -30,8 +30,10 @@ let%expect_test "karpathy's neuron example 2" =
        }]);
   [%expect
     {|
-    ((gx1 -1.4999999999999993) (gx2 0.49999999999999978)
-     (gw1 0.99999999999999956) (gw2 0)) |}];
+    ((gx1 -1.4999999999999993)
+     (gx2 0.49999999999999978)
+     (gw1 0.99999999999999956)
+     (gw2 0)) |}];
   let r_tensor = Value.With_tensor.tensor rt in
   print_s [%sexp { shape = (Tensor.shape r_tensor : int list) }];
   [%expect {| ((shape ())) |}];
@@ -55,7 +57,9 @@ let%expect_test "karpathy's neuron example 2" =
   print_tensor_gradients ();
   [%expect
     {|
-    ((gx1 -1.5000003576278687) (gx2 0.50000011920928955) (gw1 1.0000002384185791)
+    ((gx1 -1.5000003576278687)
+     (gx2 0.50000011920928955)
+     (gw1 1.0000002384185791)
      (gw2 0)) |}];
   ()
 ;;

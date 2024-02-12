@@ -9,10 +9,14 @@
   -open
   Base
   -open
-  Stdio
+  Expect_test_helpers_base
   -open
   Micrograd)
- (libraries base micrograd stdio torch)
+ (libraries
+  base
+  expect_test_helpers_core.expect_test_helpers_base
+  micrograd
+  torch)
  (inline_tests)
  (instrumentation
   (backend bisect_ppx))
