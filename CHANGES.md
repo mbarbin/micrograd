@@ -1,3 +1,19 @@
+## 0.1.5 (unreleased)
+
+### Added
+
+### Changed
+
+- Upgrade GitHub workflows `actions/checkout` to v4.
+- In CI, specify build target `@all`, and add `@lint`.
+- List ppxs instead of `ppx_jane`.
+
+### Deprecated
+
+### Fixed
+
+### Removed
+
 ## 0.1.4 (2024-02-14)
 
 ### Changed
