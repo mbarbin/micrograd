@@ -206,6 +206,8 @@ let%expect_test "karpathy's example" =
   [%expect {| ((grad_b 645.57725947521863)) |}];
   (* Compare with karpathy's expected values. *)
   let module Expected_values = struct
+    [@@@coverage off]
+
     type t = string * string * string [@@deriving equal, sexp_of]
   end
   in

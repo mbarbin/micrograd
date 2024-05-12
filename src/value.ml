@@ -1,20 +1,26 @@
-type t =
-  { mutable data : float
-  ; mutable gradient : float
-  ; node : node
-  ; id : int
-  }
+module T = struct
+  [@@@coverage off]
 
-and node =
-  | Leaf of { mutable parameter : float }
-  | Add of t * t
-  | Multiply of t * t
-  | Power of t * int
-  | Negate of t
-  | Relu of t
-  | Tanh of t
-  | Exp of t
-[@@deriving sexp_of]
+  type t =
+    { mutable data : float
+    ; mutable gradient : float
+    ; node : node
+    ; id : int
+    }
+
+  and node =
+    | Leaf of { mutable parameter : float }
+    | Add of t * t
+    | Multiply of t * t
+    | Power of t * int
+    | Negate of t
+    | Relu of t
+    | Tanh of t
+    | Exp of t
+  [@@deriving sexp_of]
+end
+
+include T
 
 let compute_data node =
   match (node : node) with
