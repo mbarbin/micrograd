@@ -12,7 +12,7 @@
   Expect_test_helpers
   -open
   Micrograd)
- (libraries base expect-test-helpers micrograd torch)
+ (libraries base expect-test-helpers micrograd)
  (inline_tests)
  (instrumentation
   (backend bisect_ppx))

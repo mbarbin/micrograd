@@ -76,8 +76,4 @@
   (ppx_sexp_value
    (and
     (>= v0.16)
-    (< v0.17)))
-  (torch
-   (and
-    (>= v0.16)
     (< v0.17)))))

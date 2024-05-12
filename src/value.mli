@@ -28,17 +28,3 @@ val run_forward : t -> unit
     was not built with [leaf]. After updating leaf data, the values must be
     recomputed with a [run_forward]. *)
 val update_data : t -> f:(float -> float) -> unit
-
-(** {1 Interacting with Torch} *)
-
-module Value_map : sig
-  type value := t
-  type 'a t
-
-  val find : 'a t -> value -> 'a option
-end
-
-(** Build a Torch.Tensor for all intermediary values contained by [t] and return
-    a map for all tensor built, as well as the tensor built for the outer [t]
-    value. *)
-val tensor : t -> Torch.Tensor.t Value_map.t * Torch.Tensor.t

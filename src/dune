@@ -2,7 +2,7 @@
  (name micrograd)
  (public_name micrograd)
  (flags :standard -w +a-4-40-41-42-44-45-48-66 -warn-error +a -open Base)
- (libraries appendable-list base torch)
+ (libraries appendable-list base)
  (instrumentation
   (backend bisect_ppx))
  (lint
