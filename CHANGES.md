@@ -1,3 +1,13 @@
+## 0.1.6 (unreleased)
+
+### Added
+
+- Added tests to increase coverage
+
+### Removed
+
+- Replaced [Value.With_tensor] by a [Value_map] returned by [Value.tensor].
+
 ## 0.1.5 (2024-03-13)
 
 ### Changed
