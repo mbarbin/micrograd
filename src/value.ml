@@ -38,7 +38,7 @@ let update_data t ~f =
   match t.node with
   | Leaf t -> t.parameter <- f t.parameter
   | Add _ | Multiply _ | Power _ | Negate _ | Relu _ | Tanh _ | Exp _ ->
-    raise_s [%sexp "Cannot update value since it is not a leaf", (t : t)]
+    raise_s [%sexp "Cannot update value since it is not a leaf", (t : t)] [@coverage off]
 ;;
 
 module Expression = struct
