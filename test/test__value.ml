@@ -22,7 +22,8 @@ let%expect_test "Value.update_data" =
   print_s [%sexp { a = (Value.data a : float) }];
   [%expect {| ((a 2)) |}];
   let b = Value.Expression.( + ) a a in
-  require_does_raise [%here] (fun () -> Value.update_data b ~f:(fun _ -> assert false));
+  require_does_raise [%here] (fun () ->
+    Value.update_data b ~f:(fun _ -> (assert false [@coverage off])));
   [%expect
     {|
     ("Cannot update value since it is not a leaf"
