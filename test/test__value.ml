@@ -10,6 +10,37 @@ let%expect_test "Value.data" =
   ()
 ;;
 
+let%expect_test "Value.update_data" =
+  let open Value.Expression in
+  let a = leaf 1. in
+  print_s [%sexp { a = (Value.data a : float) }];
+  [%expect {| ((a 1)) |}];
+  Value.update_data a ~f:(fun x -> x +. 1.);
+  print_s [%sexp { a = (Value.data a : float) }];
+  [%expect {| ((a 1)) |}];
+  Value.run_forward a;
+  print_s [%sexp { a = (Value.data a : float) }];
+  [%expect {| ((a 2)) |}];
+  let b = Value.Expression.( + ) a a in
+  require_does_raise [%here] (fun () -> Value.update_data b ~f:(fun _ -> 0.));
+  [%expect {|
+    ("Cannot update value since it is not a leaf"
+     ((data     4)
+      (gradient 0)
+      (node (
+        Add
+        ((data     2)
+         (gradient 0)
+         (node (Leaf (parameter 2)))
+         (id 3))
+        ((data     2)
+         (gradient 0)
+         (node (Leaf (parameter 2)))
+         (id 3))))
+      (id 4))) |}];
+  ()
+;;
+
 let%expect_test "Value.gradient" =
   let epsilon = 0.001 in
   let test f x y =
