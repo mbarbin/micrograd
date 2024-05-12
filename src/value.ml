@@ -135,6 +135,32 @@ module Value_map = struct
   let find t value = Map.find t value.id
 end
 
+(* I ran into issue trying to use [Tensor.float_power_], such as in:
+
+   {v
+     let tensor_power t n = Tensor.float_power_ t ~exponent:(Scalar.int n)]
+   v}
+
+   Thus, implemented the following function to compute the power of a tensor.
+*)
+let tensor_power t ~exponent:n =
+  let open Torch in
+  let rec aux t n =
+    let tensor =
+      if n = 0
+      then Tensor.f 1.
+      else if n = 1
+      then t
+      else (
+        let n_over_2 = n / 2 in
+        let t_squared = Tensor.(set_requires_grad (t * t) ~r:true) in
+        if n % 2 = 0 then aux t_squared n_over_2 else Tensor.(t * aux t_squared n_over_2))
+    in
+    Tensor.set_requires_grad tensor ~r:true
+  in
+  aux t n
+;;
+
 let tensor t =
   let value_table = Hashtbl.create (module Int) in
   let rec tensor t =
@@ -144,7 +170,7 @@ let tensor t =
       | Leaf f -> Tensor.f f.parameter
       | Add (t1, t2) -> Tensor.(tensor t1 + tensor t2)
       | Multiply (t1, t2) -> Tensor.(tensor t1 * tensor t2)
-      | Power (t, n) -> Tensor.float_power_ (tensor t) ~exponent:(Scalar.int n)
+      | Power (t, n) -> tensor_power (tensor t) ~exponent:n
       | Negate t -> Tensor.(~-(tensor t))
       | Relu t -> Tensor.relu (tensor t)
       | Tanh t -> Tensor.tanh (tensor t)
