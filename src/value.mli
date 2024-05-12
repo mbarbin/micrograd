@@ -31,28 +31,14 @@ val update_data : t -> f:(float -> float) -> unit
 
 (** {1 Interacting with Torch} *)
 
-val tensor : t -> Torch.Tensor.t
+module Value_map : sig
+  type value := t
+  type 'a t
 
-module With_tensor : sig
-    (** Building both values and tensors terms at the same time. *)
+  val find : 'a t -> value -> 'a option
+end
 
-    type t
-    type value
-
-    module Expression : sig
-      val leaf : float -> t
-      val negate : t -> t
-      val relu : t -> t
-      val tanh : t -> t
-      val exp : t -> t
-      val ( + ) : t -> t -> t
-      val ( - ) : t -> t -> t
-      val ( * ) : t -> t -> t
-      val ( / ) : t -> t -> t
-      val ( ** ) : t -> int -> t
-    end
-
-    val value : t -> value
-    val tensor : t -> Torch.Tensor.t
-  end
-  with type value := t
+(** Build a Torch.Tensor for all intermediary values contained by [t] and return
+    a map for all tensor built, as well as the tensor built for the outer [t]
+    value. *)
+val tensor : t -> Torch.Tensor.t Value_map.t * Torch.Tensor.t

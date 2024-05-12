@@ -9,19 +9,18 @@ let get_float t =
 ;;
 
 let%expect_test "karpathy's neuron example 2" =
-  let open Value.With_tensor.Expression in
+  let open Value.Expression in
   let x1 = leaf 2. in
   let x2 = leaf 0. in
   let w1 = leaf (-3.) in
   let w2 = leaf 1. in
   let b = leaf 6.8813735870195432 in
-  let rt = tanh ((x1 * w1) + (x2 * w2) + b) in
-  let r = Value.With_tensor.value rt in
+  let r = tanh ((x1 * w1) + (x2 * w2) + b) in
   print_s [%sexp (Value.data r : float)];
   [%expect {| 0.70710678118654768 |}];
   Value.run_backward_propagation r;
   print_s
-    (let gradient x = x |> Value.With_tensor.value |> Value.gradient in
+    (let gradient x = x |> Value.gradient in
      [%sexp
        { gx1 = (gradient x1 : float)
        ; gx2 = (gradient x2 : float)
@@ -34,7 +33,7 @@ let%expect_test "karpathy's neuron example 2" =
      (gx2 0.49999999999999978)
      (gw1 0.99999999999999956)
      (gw2 0)) |}];
-  let r_tensor = Value.With_tensor.tensor rt in
+  let r_map, r_tensor = Value.tensor r in
   print_s [%sexp { shape = (Tensor.shape r_tensor : int list) }];
   [%expect {| ((shape ())) |}];
   Tensor.print r_tensor;
@@ -44,7 +43,13 @@ let%expect_test "karpathy's neuron example 2" =
   print_s [%sexp (get_float r_tensor : float)];
   [%expect {| 0.70710670948028564 |}];
   let print_tensor_gradients () =
-    let gradient x = x |> Value.With_tensor.tensor |> Tensor.grad |> get_float in
+    let gradient x =
+      x
+      |> Value.Value_map.find r_map
+      |> Option.value_exn ~here:[%here]
+      |> Tensor.grad
+      |> get_float
+    in
     print_s
       [%sexp
         { gx1 = (gradient x1 : float)
