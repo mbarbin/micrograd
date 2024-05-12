@@ -6,7 +6,10 @@
 
 ### Removed
 
-- Replaced [Value.With_tensor] by a [Value_map] returned by [Value.tensor].
+- Removed [Torch] dependency. Reasoning:
+    - I can't get [torch] to compile reliably at this time. In particular, I have build issues with [torch.v0.17.0].
+    - I find the [Torch] API not easy enough to use for these simple cases, and I am getting runtime exceptions when running code that type checks OK and looks sort of reasonable (although perhaps naively).
+    - Keeping only the micrograd part makes the project more self-contained.
 
 ## 0.1.5 (2024-03-13)
 
