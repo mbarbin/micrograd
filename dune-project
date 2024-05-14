@@ -21,7 +21,7 @@
   "A replication of karpathy/micrograd in OCaml for educational purposes")
  (depends
   (ocaml
-   (>= 5.1))
+   (>= 5.2))
   (appendable-list
    (and
     (>= v0.17)
