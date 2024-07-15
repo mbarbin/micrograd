@@ -1,5 +1,10 @@
 ## 0.1.6 (unreleased)
 
+### Changed
+
+- Upgrade `ocaml` to `5.2`.
+- Upgrade `dune` to `3.16`.
+
 ### Added
 
 - Added tests to increase coverage
