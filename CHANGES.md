@@ -1,12 +1,15 @@
-## 0.1.6 (unreleased)
+## 0.1.6 (2024-07-26)
 
 ### Changed
 
+- Upgrade `ppxlib` to `0.33` - activate unused items warnings.
 - Upgrade `ocaml` to `5.2`.
 - Upgrade `dune` to `3.16`.
+- Upgrade base & co to `0.17`.
 
 ### Added
 
+- Added dependabot config for automatically upgrading action files.
 - Added tests to increase coverage
 
 ### Removed
