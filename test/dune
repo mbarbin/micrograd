@@ -1,5 +1,6 @@
 (library
  (name micrograd_test)
+ (public_name micrograd-tests.micrograd_test)
  (flags
   :standard
   -w
@@ -9,10 +10,10 @@
   -open
   Base
   -open
-  Expect_test_helpers
+  Expect_test_helpers_base
   -open
   Micrograd)
- (libraries base expect-test-helpers micrograd)
+ (libraries base expect_test_helpers_core.expect_test_helpers_base micrograd)
  (inline_tests)
  (instrumentation
   (backend bisect_ppx))
