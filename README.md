@@ -9,5 +9,4 @@ Original work at https://github.com/karpathy/micrograd
 
 ## Code Documentation
 
-The code documentation of the latest release is built with `odoc` and published
-to `GitHub` pages [here](https://mbarbin.github.io/micrograd).
+The code documentation of the latest release is built with `odoc` and published to `GitHub` pages [here](https://mbarbin.github.io/micrograd).
