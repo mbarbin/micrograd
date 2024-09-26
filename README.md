@@ -7,7 +7,7 @@ A work-in-progress replication of karpathy's micrograd in OCaml, for educational
 
 Original work at https://github.com/karpathy/micrograd
 
-## Code documentation
+## Code Documentation
 
 The code documentation of the latest release is built with `odoc` and published
 to `GitHub` pages [here](https://mbarbin.github.io/micrograd).
