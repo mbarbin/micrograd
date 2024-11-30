@@ -15,6 +15,8 @@
 
 (documentation "https://mbarbin.github.io/micrograd/")
 
+(implicit_transitive_deps false)
+
 (package
  (name micrograd)
  (synopsis
