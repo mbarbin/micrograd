@@ -20,10 +20,10 @@ let apply t ~inputs:x =
     raise_s
       [%sexp
         "Unexpected input length"
-        , { x = (Array.map x ~f:Value.data : float array)
-          ; x_length = (Array.length x : int)
-          ; t_num_inputs = (t.num_inputs : int)
-          }] [@coverage off];
+      , { x = (Array.map x ~f:Value.data : float array)
+        ; x_length = (Array.length x : int)
+        ; t_num_inputs = (t.num_inputs : int)
+        }] [@coverage off];
   let open Value.Expression in
   let wx =
     Array.map2_exn t.weights x ~f:(fun w x -> w * x) |> Array.reduce_exn ~f:( + )

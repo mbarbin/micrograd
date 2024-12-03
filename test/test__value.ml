@@ -259,7 +259,8 @@ let%expect_test "karpathy's example" =
       (g4, ga4, gb4)
       karpathy's_expected_values
   in
-  [%expect {|
+  [%expect
+    {|
     ((g4  24.7041)
      (ga4 138.8338)
      (gb4 645.5773)) |}];

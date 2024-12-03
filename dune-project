@@ -70,7 +70,7 @@
   (ocamlformat
    (and
     :with-dev-setup
-    (= 0.26.2)))
+    (= 0.27.0)))
   (appendable-list
    (and
     (>= v0.17)

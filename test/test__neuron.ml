@@ -10,7 +10,8 @@ let%expect_test "apply" =
   Value.run_forward v1;
   Value.run_forward v2;
   print_s [%sexp { v1 = (Value.data v1 : float); v2 = (Value.data v2 : float) }];
-  [%expect {|
+  [%expect
+    {|
   ((v1 -0.9051482536448664)
    (v2 0)) |}];
   ()
