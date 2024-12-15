@@ -13,7 +13,11 @@
   Expect_test_helpers_base
   -open
   Micrograd)
- (libraries base expect_test_helpers_core.expect_test_helpers_base micrograd)
+ (libraries
+  appendable-list
+  base
+  expect_test_helpers_core.expect_test_helpers_base
+  micrograd)
  (inline_tests)
  (instrumentation
   (backend bisect_ppx))
