@@ -25,8 +25,7 @@
   (ocaml
    (>= 5.2))
   (appendable-list
-   (and
-    (>= v0.17)))
+   (>= v0.17))
   (base
    (>= v0.17))
   (ppx_compare
@@ -57,8 +56,7 @@
     :with-dev-setup
     (= 0.27.0)))
   (appendable-list
-   (and
-    (>= v0.17)))
+   (>= v0.17))
   (base
    (>= v0.17))
   (bisect_ppx
